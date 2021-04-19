@@ -90,30 +90,77 @@ function sumRest(...args) {
 // // Pavlov says meow to me!
 // // true
 
- function curriedSum(numArgs) {
+//  function curriedSum(numArgs) {
+//     const numbers = [];
+//     function _curriedSum(num) {
+//         // debugger
+//         numbers.push(num);
+//         if (numbers.length === numArgs) {
+//             debugger
+//             let total = 0;
+//             numbers.forEach((n) => {
+//                 total += n;
+//             });
+//             // console.log(total)
+//             // let total = numbers.reduce((acc, el) => (acc + el))
+//             return total;
+//         }
+//         else {
+//             debugger
+//             return _curriedSum;
+//         }
+//     }
+//     return _curriedSum
+//  }
+
+//  const cSum = curriedSum(4);
+ 
+//  cSum(5)(30)(20)(1);
+
+// Function.prototype.curry = function (numArgs) {
+//     const numbers = [];
+//     let that = this;
+    
+//     function _curry(arg) {
+//         numbers.push(arg);
+//         if (numbers.length === numArgs) {
+//             return that.apply(null, numbers);
+//         } else {
+//             return _curry;
+//         }
+//     }
+//     return _curry;
+// }
+
+
+Function.prototype.curry = function (numArgs) {
     const numbers = [];
-    function _curriedSum(num) {
-        debugger
-        numbers.push(num);
+    let that = this;
+
+    function _curry(arg) {
+        numbers.push(arg);
         if (numbers.length === numArgs) {
-            debugger
-            let total = 0;
-            numbers.forEach((n) => {
-                total += n;
-            });
-            // console.log(total)
-            // let total = numbers.reduce((acc, el) => (acc + el))
-            return total;
-        }
-        else {
-            debugger
-            return _curriedSum;
+            return that(...numbers);
+        } else {
+            return _curry;
         }
     }
-    return _curriedSum
- }
+    return _curry;
+}
 
- const cSum = curriedSum(4);
- 
- cSum(5)(30)(20)(1);
 
+
+function sumThree(num1, num2, num3) {
+    return num1 + num2 + num3;
+}
+
+// sumThree(4, 20, 6); // == 30
+
+// you'll write `Function#curry`!
+let f1 = sumThree.curry(3); // tells `f1` to wait until 3 arguments are given before running `sumThree`
+f1 = f1(4); // [Function]
+f1 = f1(20); // [Function]
+f1 = f1(6); // = 30
+
+// or more briefly:
+sumThree.curry(3)(4)(20)(6); // == 30
